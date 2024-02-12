@@ -26,7 +26,9 @@
 
 
 <div style={isSafari ? `background-image: url(${menuUrl}); background-size: cover; background-position: center;` : ""}>
+	{#if !isSafari}
 	<video src={menuUrl} loop disablepictureinpicture></video>
+	{/if}
 	<VideoLinkButton
 		videoName="ControlCenter"
 		tooltip="Control center"

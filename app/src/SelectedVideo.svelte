@@ -34,7 +34,9 @@
 </script>
 
 <div style={isSafari ? `background-image: url(${videoUrl}); background-size: cover; background-position: center;` : ""}>
+    {#if !isSafari}
 	<video src={videoUrl}  muted playsinline disablepictureinpicture></video>
+    {/if}
 	<button on:click={returnToMainMenu} />
 </div>
 
