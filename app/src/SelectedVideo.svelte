@@ -19,7 +19,7 @@
 
 		const videoElement = document.querySelector('video');
 		videoElement?.addEventListener('canplay', () => {
-			videoElement.play();
+			videoElement.play().catch(e => alert(`"Error attempting to play video: ${e}`));
 		});
 		return unsubscribe;
 	});
