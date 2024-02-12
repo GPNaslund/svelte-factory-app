@@ -17,8 +17,9 @@
 			videoUrl = value;
 		});
 
-		const videoElement = document.querySelector('video');
+		const videoElement = document.querySelector('#selected-video');
 		videoElement?.addEventListener('canplay', () => {
+			// @ts-ignore
 			videoElement.play().catch(e => alert(`"Error attempting to play video: ${e}`));
 		});
 		return unsubscribe;
@@ -26,7 +27,7 @@
 </script>
 
 <div>
-	<video src={videoUrl} muted playsinline disablepictureinpicture></video>
+	<video src={videoUrl} id="selected-video" muted playsinline disablepictureinpicture></video>
 	<button on:click={returnToMainMenu} />
 </div>
 
