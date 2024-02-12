@@ -33,7 +33,7 @@
 	});
 </script>
 
-<div style={isSafari ? `background-image: url(${videoUrl}); background-size: cover; background-position: center;` : ""}>
+<div style={isSafari ? `background-image: url(${videoUrl}); background-size: 100% 100%; background-position: center;` : ""}>
     {#if !isSafari}
 	<video src={videoUrl}  muted playsinline disablepictureinpicture></video>
     {/if}

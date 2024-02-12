@@ -25,7 +25,7 @@
 </script>
 
 
-<div style={isSafari ? `background-image: url(${menuUrl}); background-size: cover; background-position: center;` : ""}>
+<div style={isSafari ? `background-image: url(${menuUrl}); background-size: 100% 100%; background-position: center;` : ""}>
 	{#if !isSafari}
 	<video src={menuUrl} loop disablepictureinpicture></video>
 	{/if}
