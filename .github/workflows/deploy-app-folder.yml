@@ -13,14 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Build project
+        run: npm install && npm run build
+        # Make sure this builds into app/build
+
       - name: Install SSH and SFTP clients
         run: sudo apt-get install sshpass openssh-client
 
-      - name: Deploy 'app' folder to SFTP server
+      - name: Deploy 'app/build' folder to SFTP server
         env:
           SSHPASS: ${{ secrets.SFTP_PASSWORD }}
         run: |
-          sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -oPort=${{ secrets.SFTP_PORT }} ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }} <<< $'put -r app/build /'
-
+          sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - -oPort=${{ secrets.SFTP_PORT }} ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }} <<< $'put -r app/build /'
 
 

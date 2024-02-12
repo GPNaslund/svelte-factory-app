@@ -1,5 +1,4 @@
 <script>
-	// test
     /**
 	 * @type {String}
 	 */
