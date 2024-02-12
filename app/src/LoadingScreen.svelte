@@ -31,7 +31,9 @@
     })
 
 	function handleClick() {
-		showMainMenu.set(true);
+		if (videosLoadedValue == videosToLoadValue) {
+			showMainMenu.set(true);
+		}
 	}
 
 </script>
