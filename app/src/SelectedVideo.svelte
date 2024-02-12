@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 
 	function returnToMainMenu() {
-		videoToDisplay.set('');
+		videoToDisplay.set("");
 		showMainMenu.set(true);
 	}
 
@@ -17,27 +17,32 @@
 			videoUrl = value;
 		});
 
-		const videoElement = document.querySelector('#selected-video');
+		const videoElement = document.querySelector("video");
 		videoElement?.addEventListener('canplay', () => {
-			// @ts-ignore
-			videoElement.play().catch(e => alert(`"Error attempting to play video: ${e}`));
+			videoElement.play();
 		});
 		return unsubscribe;
 	});
 </script>
 
-<div>
-	<video src={videoUrl} id="selected-video" muted playsinline disablepictureinpicture></video>
+<div style="background-image: url({videoUrl}); background-size: cover; background-position: center;">
+	<video src={videoUrl}  muted playsinline disablepictureinpicture></video>
 	<button on:click={returnToMainMenu} />
 </div>
 
 <style>
     div {
+        position: relative;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
     }
 
     video {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         object-fit: fill;
