@@ -15,6 +15,7 @@ jobs:
 
       - name: Build project
         run: npm install && npm run build
+        working-directory: ./app
         # Make sure this builds into app/build
 
       - name: Install SSH and SFTP clients
