@@ -7,6 +7,10 @@
 	 * @type {string}
 	 */
 	let menuUrl;
+	/**
+	 * @type {boolean}
+	 */
+	let isSafari;
 
 	$: {
 		const menuObj = $videoUrls.find((urlObj) => urlObj.name === 'Menue');
@@ -16,11 +20,13 @@
 	onMount(() => {
 		let videoElement = document.querySelector("video");
 		videoElement?.play();
+		isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 	})
 </script>
 
-<div style="background-image: url({menuUrl}); background-size: cover; background-position: center;">
-	<video src={menuUrl} loop playsinline disablepictureinpicture></video>
+
+<div style={isSafari ? `background-image: url(${menuUrl}); background-size: cover; background-position: center;` : ""}>
+	<video src={menuUrl} loop disablepictureinpicture></video>
 	<VideoLinkButton
 		videoName="ControlCenter"
 		tooltip="Control center"

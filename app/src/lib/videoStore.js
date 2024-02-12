@@ -1,4 +1,5 @@
-import { videosLoaded,  videosToLoad, videoUrls } from "./stores";
+import { videoUrls } from "./stores";
+import { writable, get } from "svelte/store";
 
 const videosToStore = [
     { name: "ControlCenter" },
@@ -14,57 +15,74 @@ const videosToStore = [
     { name: "WSMDashboard" }
 ];
 
-export async function initializeDB() {
-    return /** @type {Promise<void>} */(new Promise((resolve, reject) => {
-        const openRequest = indexedDB.open("LOFFactory", 1);
-        let db;
+const createVideoStore = () => {
+    const videosToLoad = writable(0);
+    const videosLoaded = writable(0);
 
-        openRequest.onupgradeneeded = (event) => {
-            // @ts-ignore
-            db = event.target.result
-            if (!db.objectStoreNames.contains("videos")) {
-                db.createObjectStore("videos", { keyPath: "name" });
-            }
-        };
-
-        openRequest.onerror = () => {
-            reject(`An error occured when initializing the database.
-            Error message: ${openRequest.error}.
-            If persistent, try another browser!
-        `);
-            console.error(openRequest.error)
-        };
-
-        openRequest.onsuccess = async (event) => {
-            console.log("Database is opened!");
-            // @ts-ignore
-            db = event.target.result;
-            videosToLoad.set(videosToStore.length - 1);
-            let completed = 0;
-            for (const video of videosToStore) {
-                try {
-                    const exists = await videoExistsInDB(db, video.name);
-                    console.log(exists);
-                    if (!exists) {
-                        const videoBlob = await returnVideoFromNetwork(video.name);
-                        await saveVideoToDB(db, videoBlob, video.name);
-                    }
-
-                    if (video.name !== "Menue") {
-                        completed += 1;
-                        videosLoaded.set(completed);
-                    }
-                } catch (error) {
-                    // @ts-ignore
-                    reject(error.message);
+    
+    async function initializeDB() {
+        return /** @type {Promise<void>} */(new Promise((resolve, reject) => {
+            const openRequest = indexedDB.open("LOFFactory", 1);
+            let db;
+    
+            openRequest.onupgradeneeded = (event) => {
+                // @ts-ignore
+                db = event.target.result
+                if (!db.objectStoreNames.contains("videos")) {
+                    db.createObjectStore("videos", { keyPath: "name" });
                 }
-            }
-            // @ts-ignore
-            videoUrls.set(videosToStore);
-            resolve()
-        };
-    }));
-}
+            };
+    
+            openRequest.onerror = () => {
+                reject(`An error occured when initializing the database.
+                Error message: ${openRequest.error}.
+                If persistent, try another browser!
+            `);
+                console.error(openRequest.error)
+            };
+    
+            openRequest.onsuccess = async (event) => {
+                console.log("Database is opened!");
+                // @ts-ignore
+                db = event.target.result;
+                videosToLoad.set(videosToStore.length - 1);
+                let completed = 0;
+                for (const video of videosToStore) {
+                    try {
+                        const exists = await videoExistsInDB(db, video.name);
+                        console.log(exists);
+                        if (!exists) {
+                            const videoBlob = await returnVideoFromNetwork(video.name);
+                            await saveVideoToDB(db, videoBlob, video.name);
+                        }
+    
+                        if (video.name !== "Menue") {
+                            completed += 1;
+                            videosLoaded.set(completed);
+                        }
+                    } catch (error) {
+                        // @ts-ignore
+                        reject(error.message);
+                    }
+                }
+                // @ts-ignore
+                videoUrls.set(videosToStore);
+                resolve()
+            };
+        }));
+    }
+
+    // Expose store methods and properties
+    return {
+        videosToLoad,
+        videosLoaded,
+        videoUrls,
+        initializeDB
+    };
+};
+
+export const videoStore = createVideoStore();
+
 
 /**
  * @param {{ transaction: (arg0: string[], arg1: string) => any; }} db

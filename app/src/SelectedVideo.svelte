@@ -12,6 +12,11 @@
 	 */
 	let videoUrl;
 
+    /**
+	 * @type {boolean}
+	 */
+    let isSafari;
+
 	onMount(() => {
 		const unsubscribe = videoToDisplay.subscribe((value) => {
 			videoUrl = value;
@@ -21,11 +26,14 @@
 		videoElement?.addEventListener('canplay', () => {
 			videoElement.play();
 		});
+
+        isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
 		return unsubscribe;
 	});
 </script>
 
-<div style="background-image: url({videoUrl}); background-size: cover; background-position: center;">
+<div style={isSafari ? `background-image: url(${videoUrl}); background-size: cover; background-position: center;` : ""}>
 	<video src={videoUrl}  muted playsinline disablepictureinpicture></video>
 	<button on:click={returnToMainMenu} />
 </div>

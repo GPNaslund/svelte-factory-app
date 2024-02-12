@@ -1,12 +1,12 @@
 <script>
 	import ErrorMessage from './ErrorMessage.svelte';
-	import { videosToLoad, videosLoaded, showMainMenu } from '$lib/stores';
-    import { initializeDB } from '$lib/indexeddb';
-    import { onMount } from 'svelte';
+	import { showMainMenu } from '$lib/stores';
+    import { videoStore } from '$lib/videoStore';
+    import { onDestroy, onMount } from 'svelte';
 	/**
 	 * @type {String}
 	 */
-	let errorMessage;
+	let errorMessage = "";
 
 	/**
 	 * @type {Number}
@@ -18,17 +18,23 @@
 	 */
 	let videosToLoadValue;
 
-    videosLoaded.subscribe((value) =>{
+    onMount(async () => {
+        await videoStore.initializeDB().catch(e => errorMessage = e.toString());
+    })
+
+
+	const unsubscribeVideosLoaded = videoStore.videosLoaded.subscribe(value => {
         videosLoadedValue = value;
     });
 
-    videosToLoad.subscribe((value) => {
+    const unsubscribeVideosToLoad = videoStore.videosToLoad.subscribe(value => {
         videosToLoadValue = value;
-    })
+    });
 
-    onMount(async () => {
-        await initializeDB();
-    })
+    onDestroy(() => {
+        unsubscribeVideosLoaded();
+        unsubscribeVideosToLoad();
+    });
 
 	function handleClick() {
 		if (videosLoadedValue == videosToLoadValue) {
@@ -45,7 +51,7 @@
 			<ErrorMessage {errorMessage} />
 		{/if}
 		{#if !errorMessage}
-			<div>{videosLoadedValue }/{videosToLoadValue} stations loaded..</div>
+			<div>{videosLoadedValue}/{videosToLoadValue} stations loaded..</div>
 				<button
                 on:click={handleClick}
                 id="enter-factory-btn" 
