@@ -29,7 +29,13 @@ self.addEventListener('activate', (event) => {
 	}
 
 	// @ts-ignore
-	event.waitUntil(deleteOldCaches());
+	event.waitUntil(
+        (async () => {
+            await deleteOldCaches();
+            // @ts-ignore
+            await self.clients.claim();
+        })()
+    );
 });
 
 self.addEventListener('fetch', (event) => {

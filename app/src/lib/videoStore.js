@@ -22,12 +22,17 @@ const createVideoStore = () => {
     
     async function initializeDB() {
         return /** @type {Promise<void>} */(new Promise((resolve, reject) => {
-            const openRequest = indexedDB.open("LOFFactory", 1);
+            const openRequest = indexedDB.open("LOFFactory", 2);
             let db;
     
             openRequest.onupgradeneeded = (event) => {
                 // @ts-ignore
                 db = event.target.result
+
+                if (db.objectStoreNames.contains("videos")) {
+                    db.deleteObjectStore("videos");
+                }
+
                 if (!db.objectStoreNames.contains("videos")) {
                     db.createObjectStore("videos", { keyPath: "name" });
                 }
