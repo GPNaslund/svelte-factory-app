@@ -56,7 +56,7 @@ const createVideoStore = () => {
                     try {
                         const saveTimeout = setTimeout(() => {
                             reject("Storage space may be low. Please try a page refresh or consider clearing some browser data.")
-                        }, 2000);
+                        }, 20000);
                         const exists = await videoExistsInDB(db, video.name);
                         console.log(exists);
                         if (!exists) {
