@@ -59,7 +59,7 @@
         z-index: 5;
     }
 	button {
-		background: url('/Back.png') no-repeat center center / contain;
+		background: url('/blue-backwards.png') no-repeat center center / contain;
 		border: none;
 		cursor: pointer;
 		width: 4vw;

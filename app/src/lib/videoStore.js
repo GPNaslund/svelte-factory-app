@@ -19,12 +19,12 @@ const createVideoStore = () => {
     const videosToLoad = writable(0);
     const videosLoaded = writable(0);
 
-    
+
     async function initializeDB() {
         return /** @type {Promise<void>} */(new Promise((resolve, reject) => {
             const openRequest = indexedDB.open("LOFFactory", 2);
             let db;
-    
+
             openRequest.onupgradeneeded = (event) => {
                 // @ts-ignore
                 db = event.target.result
@@ -37,7 +37,7 @@ const createVideoStore = () => {
                     db.createObjectStore("videos", { keyPath: "name" });
                 }
             };
-    
+
             openRequest.onerror = () => {
                 reject(`An error occured when initializing the database.
                 Error message: ${openRequest.error}.
@@ -45,7 +45,7 @@ const createVideoStore = () => {
             `);
                 console.error(openRequest.error)
             };
-    
+
             openRequest.onsuccess = async (event) => {
                 console.log("Database is opened!");
                 // @ts-ignore
@@ -54,17 +54,22 @@ const createVideoStore = () => {
                 let completed = 0;
                 for (const video of videosToStore) {
                     try {
+                        const saveTimeout = setTimeout(() => {
+                            reject("Storage space may be low. Please try a page refresh or consider clearing some browser data.")
+                        }, 2000);
                         const exists = await videoExistsInDB(db, video.name);
                         console.log(exists);
                         if (!exists) {
                             const videoBlob = await returnVideoFromNetwork(video.name);
+                            // @ts-ignore
                             await saveVideoToDB(db, videoBlob, video.name);
                         }
-    
+
                         if (video.name !== "Menue") {
                             completed += 1;
                             videosLoaded.set(completed);
                         }
+                        clearTimeout(saveTimeout);
                     } catch (error) {
                         // @ts-ignore
                         reject(error.message);
@@ -125,21 +130,37 @@ function videoExistsInDB(db, name) {
  * @param {string} videoName
  */
 async function returnVideoFromNetwork(videoName) {
-    try {
-        console.log("Fetching video from network");
-        const response = await fetch(`/videos/${videoName}.mp4`);
-        if (!response.ok) {
-            throw new Error(`Network error: Could not fetch video ${videoName}`);
+    const maxRetries = 3;
+    let retries = 0;
+
+    while (retries < maxRetries) {
+        try {
+            console.log(`Fetching video from network (attempt ${retries + 1})`);
+            const response = await fetch(`/videos/${videoName}.mp4`);
+
+            if (!response.ok) {
+                throw new Error(`Network error: Could not fetch video ${videoName}`);
+            }
+
+            const mp4Blob = await response.blob();
+            const videoObject = videosToStore.find(video => video.name === videoName);
+            if (videoObject) {
+                // @ts-ignore
+                videoObject.url = URL.createObjectURL(mp4Blob);
+            }
+            return mp4Blob;
+
+        } catch (error) {
+            retries++;
+            if (retries < maxRetries) {
+                const delay = 1000 * (retries + 1); 
+                console.error(`Fetch error attempt ${retries}, retrying in ${delay} ms:`, error);
+                await new Promise(resolve => setTimeout(resolve, delay));
+            } else {
+                console.error(`Max retries exceeded for video ${videoName}:`, error);
+                throw error;
+            }
         }
-        const mp4Blob = await response.blob();
-        const videoObject = videosToStore.find(video => video.name === videoName);
-        if (videoObject) {
-            // @ts-ignore
-            videoObject.url = URL.createObjectURL(mp4Blob);
-        }
-        return mp4Blob;
-    } catch (error) {
-        throw error;
     }
 }
 
