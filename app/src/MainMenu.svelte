@@ -58,7 +58,7 @@
 </script>
 
 <div id="main-container">
-	 <video src={menuUrl} loop disablepictureinpicture></video>
+	 <video src={menuUrl} loop disablepictureinpicture playsinline style={isSafari ? "opacity: 0" : "opacity: 1"}></video>
 		{#if isSafari}
 		<div id="video-background" style={`width: ${buttonContainerSize.width}px; height: ${buttonContainerSize.height}px; background-image: url(${menuUrl}); background-size: contain; background-position: center;`}></div>
 		{/if}
