@@ -17,6 +17,9 @@
 	 */
     let isSafari;
 
+	let buttonContainerSize = {width: 0, height: 0}
+	const videoAspectRatio = 16 / 9;
+
 	onMount(() => {
 		const unsubscribe = videoToDisplay.subscribe((value) => {
 			videoUrl = value;
@@ -29,24 +32,66 @@
 
         isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-		return unsubscribe;
+		const updateButtonContainerSize = () => {
+			const container = document.querySelector("#main-container");
+			if (!container) return;
+
+			// @ts-ignore
+			const containerWidth = container.offsetWidth;
+			// @ts-ignore
+			const containerHeight = container.offsetHeight;
+			let displayedVideoWidth, displayedVideoHeight;
+
+			if (containerWidth / containerHeight > videoAspectRatio) {
+				displayedVideoWidth = containerHeight * videoAspectRatio
+				displayedVideoHeight = containerHeight;
+			} else {
+				displayedVideoWidth = containerWidth;
+				displayedVideoHeight = containerWidth / videoAspectRatio;
+			}
+			buttonContainerSize = {width: displayedVideoWidth, height: displayedVideoHeight}
+		};
+
+		videoElement?.addEventListener("loadedmetadata", updateButtonContainerSize);
+		window.addEventListener("resize", updateButtonContainerSize);
+
+		return () => {
+			videoElement?.removeEventListener("loadedmetadata", updateButtonContainerSize);
+			window.removeEventListener("resize", updateButtonContainerSize);
+			unsubscribe
+		}
+
 	});
 </script>
 
-<div style={isSafari ? `background-image: url(${videoUrl}); background-size: 100% 100%; background-position: center;` : ""}>
-    {#if !isSafari}
+<div id="main-container">
 	<video src={videoUrl}  muted playsinline disablepictureinpicture></video>
-    {/if}
-	<button on:click={returnToMainMenu} />
+	<!-- {#if isSafari} -->
+	<div id="video-container" style={`width: ${buttonContainerSize.width}px; height: ${buttonContainerSize.height}px; background-image: url(${videoUrl}); background-size: 100% 100%; background-position: center;`}></div>
+	<!-- {/if} -->
+	<div id="button-container" style={`width: ${buttonContainerSize.width}px; height: ${buttonContainerSize.height}px;`}>
+		<button on:click={returnToMainMenu} />
+	</div>
 </div>
 
 <style>
-    div {
-        position: relative;
+	#main-container {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: rgba(0, 0, 0, 0.5);
+
+	}
+    #video-container {
+        position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 3;
     }
 
     video {
@@ -55,22 +100,27 @@
         left: 0;
         width: 100%;
         height: 100%;
-        object-fit: fill;
-        z-index: 5;
+        object-fit: contain;
+        z-index: 2;
+		background-color: rgba(0, 0, 0, 0.5);
     }
 	button {
 		background: url('/blue-backwards.png') no-repeat center center / contain;
 		border: none;
 		cursor: pointer;
-		width: 4vw;
-		height: 4vw;
+		width: 9%;
+		height: 9%;
 		display: block;
 		object-fit: contain;
 		padding: 0;
 		background-color: transparent;
-		position: fixed;
-		bottom: 4vh;
-		right: 2vw;
+		position: absolute;
+		bottom: 3%;
+		right: 1%;
 		z-index: 10;
+	}
+
+	#button-container {
+		position: relative;
 	}
 </style>

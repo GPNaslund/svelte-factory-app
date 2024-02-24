@@ -18,6 +18,8 @@
 	 */
 	let videosToLoadValue;
 
+	export let isBackground = false;
+
     onMount(async () => {
         await videoStore.initializeDB().catch(e => errorMessage = e.toString());
     })
@@ -46,6 +48,7 @@
 
 <div id="loading-container">
 	<img src="/GFLOMIntro.png" id="loading-image" alt="Lights out factory cover" />
+	{#if !isBackground}
 	<div id="initialization-info">
 		{#if errorMessage}
 			<ErrorMessage {errorMessage} />
@@ -60,6 +63,7 @@
             </button>
 		{/if}
 	</div>
+	{/if}
 </div> 
 
 <style>
@@ -67,6 +71,9 @@
 	#loading-container {
 		width: 100%;
 		height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
 	}
 
 	#loading-image {

@@ -24,13 +24,13 @@
 
 </script>
 
-{#if !showMainMenuValue && !videoToDisplayValue}
-<LoadingScreen />
-{/if}
-
 {#if showMainMenuValue && !videoToDisplayValue}
 <MainMenu />
 {/if}
+
+<LoadingScreen 
+	isBackground={showMainMenuValue ? true : false}
+/>
 
 {#if videoToDisplayValue}
 <SelectedVideo />

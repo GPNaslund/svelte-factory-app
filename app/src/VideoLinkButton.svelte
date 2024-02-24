@@ -109,7 +109,6 @@
 		max-height: 2vw;
 		background-position: center;
 		background-size: cover;
-		position: relative;
 		display: inline-block;
 	}
 
