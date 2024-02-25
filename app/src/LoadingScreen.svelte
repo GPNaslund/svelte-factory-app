@@ -23,7 +23,6 @@
 
 
     onMount(async () => {
-        await videoStore.initializeDB().catch(e => errorMessage = e.toString());
 
 		const updateButtonContainerSize = () => {
 			const container = document.querySelector("#loading-container");
@@ -46,6 +45,7 @@
 		};
 
 		updateButtonContainerSize();
+        await videoStore.initializeDB().catch(e => errorMessage = e.toString());
 		window.addEventListener("resize", updateButtonContainerSize);
 
     })
