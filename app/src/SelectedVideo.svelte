@@ -82,7 +82,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: rgba(0, 0, 0, 0.5);
+		background-color: rgba(25, 25, 25, 1);;
 
 	}
     #video-container {
@@ -103,7 +103,7 @@
         height: 100%;
         object-fit: contain;
         z-index: 2;
-		background-color: rgba(0, 0, 0, 0.5);
+		background-color: rgba(25, 25, 25, 1);;
     }
 	button {
 		background: url('/GF-backward.png') no-repeat center center / contain;

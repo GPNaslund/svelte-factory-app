@@ -153,7 +153,7 @@
 		justify-content: center;
 		align-items: center;
 		position: relative;
-		background-color: rgba(0, 0, 0, 0.5);
+		background-color: rgba(25, 25, 25, 1);
 		z-index: 1;
 	}
 
