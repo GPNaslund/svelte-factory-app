@@ -58,6 +58,7 @@
 			videoElement.addEventListener('loadedmetadata', updateButtonContainerSize);
 		}
 
+		updateButtonContainerSize();
 		window.addEventListener('resize', updateButtonContainerSize);
 
 		return () => {
