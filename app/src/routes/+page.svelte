@@ -4,6 +4,8 @@
 	import { showMainMenu, videoToDisplay } from "$lib/stores";
 	import MainMenu from "../MainMenu.svelte";
 	import SelectedVideo from "../SelectedVideo.svelte";
+	import { onMount } from "svelte";
+	import OrientationOverlay from "../OrientationOverlay.svelte";
 
 	/**
 	 * @type {boolean}
@@ -22,6 +24,12 @@
 		videoToDisplayValue = value;
 	})
 
+	let hasTouch = false;
+
+	onMount(() => {
+		hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+	})
+
 </script>
 
 {#if showMainMenuValue && !videoToDisplayValue}
@@ -34,6 +42,10 @@
 
 {#if videoToDisplayValue}
 <SelectedVideo />
+{/if}
+
+{#if hasTouch}
+<OrientationOverlay />
 {/if}
 
 <style>

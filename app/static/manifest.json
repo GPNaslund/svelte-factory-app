@@ -1,9 +1,9 @@
 {
-    "name": "3RAutomation",
-    "short_name": "3RAutomation",
+    "name": "GF-LOM",
+    "short_name": "GF-LOM",
     "start_url": ".",
     "display": "standalone",
-    "description": "3RAutomation",
+    "description": "GF Lights-out manufacturing",
     "background_color": "#fff",
     "icons": [
         {
