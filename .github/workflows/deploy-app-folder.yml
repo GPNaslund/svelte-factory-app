@@ -3,7 +3,7 @@ name: Deploy App Folder to SFTP
 on:
   push:
     branches:
-      - 3rbranch  # or your specific branch
+      - 3rbranch 
 
 jobs:
   deploy:
