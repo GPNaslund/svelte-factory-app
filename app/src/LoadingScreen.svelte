@@ -18,6 +18,8 @@
 	 */
 	let videosToLoadValue;
 
+	let containerVisible = false;
+
 	let containerSize = {width: 0, height: 0}
 	const imageAspectRatio = 16 / 9;
 
@@ -45,6 +47,7 @@
 		};
 
 		updateButtonContainerSize();
+		containerVisible = true;
         await videoStore.initializeDB().catch(e => errorMessage = e.toString());
 		window.addEventListener("resize", updateButtonContainerSize);
 
@@ -74,6 +77,7 @@
 
 <div id="loading-container">
 	<img src="/GF-LoM-Intro.png" id="loading-image" alt="Lights out factory cover" />
+	{#if containerVisible}
 	<div id="initialization-container" style={`width: ${containerSize.width}px; height: ${containerSize.height}px`}>
 		<div id="initialization-info">
 			{#if errorMessage}
@@ -90,6 +94,7 @@
 			{/if}
 		</div>
 	</div>
+	{/if}
 </div> 
 
 <style>
