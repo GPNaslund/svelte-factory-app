@@ -25,6 +25,6 @@ jobs:
         env:
           SSHPASS: ${{ secrets.SFTP_PASSWORD }}
         run: |
-          sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - -oPort=${{ secrets.SFTP_PORT }} ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }} <<< $'put -r app/3r /'
+          sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - -oPort=${{ secrets.SFTP_PORT }} ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }} <<< $'put -r app/build /3r'
 
 
