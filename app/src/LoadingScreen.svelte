@@ -18,9 +18,36 @@
 	 */
 	let videosToLoadValue;
 
+	let containerSize = {width: 0, height: 0}
+	const imageAspectRatio = 16 / 9;
+
 
     onMount(async () => {
         await videoStore.initializeDB().catch(e => errorMessage = e.toString());
+
+		const updateButtonContainerSize = () => {
+			const container = document.querySelector("#loading-container");
+			if (!container) return;
+
+			// @ts-ignore
+			const containerWidth = container.offsetWidth;
+			// @ts-ignore
+			const containerHeight = container.offsetHeight;
+			let displayedVideoWidth, displayedVideoHeight;
+
+			if (containerWidth / containerHeight > imageAspectRatio) {
+				displayedVideoWidth = containerHeight * imageAspectRatio
+				displayedVideoHeight = containerHeight;
+			} else {
+				displayedVideoWidth = containerWidth;
+				displayedVideoHeight = containerWidth / imageAspectRatio;
+			}
+			containerSize = {width: displayedVideoWidth, height: displayedVideoHeight}
+		};
+
+		updateButtonContainerSize();
+		window.addEventListener("resize", updateButtonContainerSize);
+
     })
 
 
@@ -47,19 +74,21 @@
 
 <div id="loading-container">
 	<img src="/GF-LoM-Intro.png" id="loading-image" alt="Lights out factory cover" />
-	<div id="initialization-info">
-		{#if errorMessage}
-			<ErrorMessage {errorMessage} />
-		{/if}
-		{#if !errorMessage}
-			<div>{videosLoadedValue}/{videosToLoadValue} stations loaded..</div>
-				<button
-                on:click={handleClick}
-                id="enter-factory-btn" 
-                style:opacity={videosLoadedValue == videosToLoadValue ? '100%' : '50%'}>
-                Enter Factory
-            </button>
-		{/if}
+	<div id="initialization-container" style={`width: ${containerSize.width}px; height: ${containerSize.height}px`}>
+		<div id="initialization-info">
+			{#if errorMessage}
+				<ErrorMessage {errorMessage} />
+			{/if}
+			{#if !errorMessage}
+				<div>{videosLoadedValue}/{videosToLoadValue} stations loaded..</div>
+					<button
+					on:click={handleClick}
+					id="enter-factory-btn" 
+					style:opacity={videosLoadedValue == videosToLoadValue ? '100%' : '50%'}>
+					Enter Factory
+				</button>
+			{/if}
+		</div>
 	</div>
 </div> 
 
@@ -68,21 +97,29 @@
 	#loading-container {
 		width: 100%;
 		height: 100%;
-		position: absolute;
+		position: relative;
 		top: 0;
 		left: 0;
+		background-color: rgba(25, 25, 25, 1);
 	}
 
 	#loading-image {
 		width: 100%;
 		height: 100%;
-		object-fit: fill;
+		object-fit: contain;
+	}
+
+	#initialization-container {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
 
 	#initialization-info {
 		position: absolute;
 		top: 60%;
-		left: 12%;
+		left: 2.5%;
 		z-index: 2;
 		color: white;
 		display: flex;

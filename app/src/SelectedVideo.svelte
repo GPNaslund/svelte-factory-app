@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 
 	function returnToMainMenu() {
-		videoToDisplay.set("");
+		videoToDisplay.set('');
 		showMainMenu.set(true);
 	}
 
@@ -12,12 +12,12 @@
 	 */
 	let videoUrl;
 
-    /**
+	/**
 	 * @type {boolean}
 	 */
-    let isSafari;
+	let isSafari;
 
-	let buttonContainerSize = {width: 0, height: 0}
+	let buttonContainerSize = { width: 0, height: 0 };
 	const videoAspectRatio = 16 / 9;
 
 	onMount(() => {
@@ -25,15 +25,17 @@
 			videoUrl = value;
 		});
 
-		const videoElement = document.querySelector("video");
-		videoElement?.addEventListener('canplay', () => {
-			videoElement.play();
-		});
+		const videoElement = document.querySelector('video');
+		if (videoElement) {
+			videoElement.addEventListener('canplay', () => {
+				videoElement.play();
+			});
+		}
 
-        isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+		isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
 		const updateButtonContainerSize = () => {
-			const container = document.querySelector("#main-container");
+			const container = document.querySelector('#main-container');
 			if (!container) return;
 
 			// @ts-ignore
@@ -43,34 +45,45 @@
 			let displayedVideoWidth, displayedVideoHeight;
 
 			if (containerWidth / containerHeight > videoAspectRatio) {
-				displayedVideoWidth = containerHeight * videoAspectRatio
+				displayedVideoWidth = containerHeight * videoAspectRatio;
 				displayedVideoHeight = containerHeight;
 			} else {
 				displayedVideoWidth = containerWidth;
 				displayedVideoHeight = containerWidth / videoAspectRatio;
 			}
-			buttonContainerSize = {width: displayedVideoWidth, height: displayedVideoHeight}
+			buttonContainerSize = { width: displayedVideoWidth, height: displayedVideoHeight };
 		};
 
-		videoElement?.addEventListener("loadedmetadata", updateButtonContainerSize);
-		window.addEventListener("resize", updateButtonContainerSize);
-
-		return () => {
-			videoElement?.removeEventListener("loadedmetadata", updateButtonContainerSize);
-			window.removeEventListener("resize", updateButtonContainerSize);
-			unsubscribe
+		if (videoElement) {
+			videoElement.addEventListener('loadedmetadata', updateButtonContainerSize);
 		}
 
+		window.addEventListener('resize', updateButtonContainerSize);
+
+		return () => {
+			if (videoElement) {
+				videoElement.removeEventListener('loadedmetadata', updateButtonContainerSize);
+			}
+
+			window.removeEventListener('resize', updateButtonContainerSize);
+			unsubscribe;
+		};
 	});
 </script>
 
 <div id="main-container">
 	{#if isSafari}
-	<div id="video-container" style={`width: ${buttonContainerSize.width}px; height: ${buttonContainerSize.height}px; background-image: url(${videoUrl}); background-size: 100% 100%; background-position: center;`}></div>
+		<div
+			id="video-container"
+			style={`width: ${buttonContainerSize.width}px; height: ${buttonContainerSize.height}px; background-image: url(${videoUrl}); background-size: 100% 100%; background-position: center;`}
+		></div>
 	{:else}
-	<video src={videoUrl} muted disablepictureinpicture></video>
+		<video src={videoUrl} muted disablepictureinpicture></video>
 	{/if}
-	<div id="button-container" style={`width: ${buttonContainerSize.width}px; height: ${buttonContainerSize.height}px;`}>
+	<div
+		id="button-container"
+		style={`width: ${buttonContainerSize.width}px; height: ${buttonContainerSize.height}px;`}
+	>
 		<button on:click={returnToMainMenu} />
 	</div>
 </div>
@@ -82,29 +95,29 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: rgba(25, 25, 25, 1);;
-
+		background-color: rgba(25, 25, 25, 1);
 	}
-    #video-container {
-        position: absolute;
-        top: 0;
-        left: 0;
+
+	#video-container {
+		position: absolute;
+		top: 0;
+		left: 0;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
 		z-index: 3;
-    }
+	}
 
-    video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        z-index: 2;
-		background-color: rgba(25, 25, 25, 1);;
-    }
+	video {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		z-index: 2;
+		background-color: rgba(25, 25, 25, 1);
+	}
 	button {
 		background: url('/GF-backward.png') no-repeat center center / contain;
 		border: none;

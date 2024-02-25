@@ -23,7 +23,10 @@
 	onMount(() => {
 		const videoElement = document.querySelector("video");
 		
-		videoElement?.play();
+		if (videoElement) {
+			videoElement.play();
+		}
+
 		isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
 		const updateButtonContainerSize = () => {
@@ -46,11 +49,18 @@
 			buttonContainerSize = {width: displayedVideoWidth, height: displayedVideoHeight}
 		};
 
-		videoElement?.addEventListener("loadedmetadata", updateButtonContainerSize);
+		if (videoElement) {
+			videoElement.addEventListener("loadedmetadata", updateButtonContainerSize);
+		}
+		
+		updateButtonContainerSize();
 		window.addEventListener("resize", updateButtonContainerSize);
 
 		return () => {
-			videoElement?.removeEventListener("loadedmetadata", updateButtonContainerSize);
+			if (videoElement) {
+				videoElement.removeEventListener("loadedmetadata", updateButtonContainerSize);
+			}
+
 			window.removeEventListener("resize", updateButtonContainerSize);
 		}
 
