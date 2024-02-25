@@ -95,7 +95,7 @@
 		class:tooltip-arrow-bottom={tooltipPos === 'bottom' && !hasTouch}
 		style="{tooltipStyle} opacity: {showTooltip || hasTouch
 			? '1'
-			: '0'}; background-color: {hasTouch ? 'transparent' : '#00629b'};"
+			: '0'}; background-color: {hasTouch ? 'transparent' : '#ff5522'};"
 	>
 		{tooltip}
 	</span>
@@ -113,7 +113,7 @@
 	}
 
 	button {
-		background: url('/GF-Plus-square.png') no-repeat center center / contain;
+		background: url('/3R-Plus-square.png') no-repeat center center / contain;
 		border: none; 
 		cursor: pointer;
 		width: 2vw;
@@ -132,7 +132,7 @@
 		padding: 0.5vh 0.5vw;
 		border-radius: 3px;
 		color: white;
-		background-color: #00629b;
+		background-color: #ff5522;
 		z-index: 1;
 		white-space: nowrap;
 		user-select: none;
@@ -154,7 +154,7 @@
 		margin-top: -5px;
 		border-width: 5px;
 		border-style: solid;
-		border-color: transparent transparent transparent #00629b;
+		border-color: transparent transparent transparent #ff5522;
 	}
 
 	.tooltip-arrow-right::after {
@@ -165,7 +165,7 @@
 		margin-top: -5px;
 		border-width: 5px;
 		border-style: solid;
-		border-color: transparent #00629b transparent transparent;
+		border-color: transparent #ff5522 transparent transparent;
 	}
 
 	.tooltip-arrow-top::after {
@@ -176,7 +176,7 @@
 		margin-left: -5px;
 		border-width: 5px;
 		border-style: solid;
-		border-color: #00629b transparent transparent transparent;
+		border-color: #ff5522 transparent transparent transparent;
 	}
 
 	.tooltip-arrow-bottom::after {
@@ -187,6 +187,6 @@
 		margin-left: -5px;
 		border-width: 5px;
 		border-style: solid;
-		border-color: transparent transparent #00629b transparent;
+		border-color: transparent transparent #ff5522 transparent;
 	}
 </style>

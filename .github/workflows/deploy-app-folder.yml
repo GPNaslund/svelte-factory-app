@@ -3,7 +3,7 @@ name: Deploy App Folder to SFTP
 on:
   push:
     branches:
-      - main  # or your specific branch
+      - 3rbranch  # or your specific branch
 
 jobs:
   deploy:
@@ -25,6 +25,6 @@ jobs:
         env:
           SSHPASS: ${{ secrets.SFTP_PASSWORD }}
         run: |
-          sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - -oPort=${{ secrets.SFTP_PORT }} ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }} <<< $'put -r app/build /'
+          sshpass -e sftp -oBatchMode=no -oStrictHostKeyChecking=no -b - -oPort=${{ secrets.SFTP_PORT }} ${{ secrets.SFTP_USERNAME }}@${{ secrets.SFTP_HOST }} <<< $'put -r app/3r /'
 
 

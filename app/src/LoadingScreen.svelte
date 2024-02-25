@@ -76,7 +76,7 @@
 </script>
 
 <div id="loading-container">
-	<img src="/GF-LoM-Intro.png" id="loading-image" alt="Lights out factory cover" />
+	<img src="/3R-LoM-Intro.png" id="loading-image" alt="Lights out factory cover" />
 	{#if containerVisible}
 	<div id="initialization-container" style={`width: ${containerSize.width}px; height: ${containerSize.height}px`}>
 		<div id="initialization-info">
@@ -137,8 +137,8 @@
 	#enter-factory-btn {
 		border-radius: 0px;
 		color: white;
-		background-color: rgba(0, 108, 162, 255);
-		border-color: rgba(0, 108, 162, 255);
+		background-color: rgba(255,85,34,255);
+		border-color: rgba(255,85,34,255);
 		font-size: clamp(1rem, 2.5vw, 2rem);
 		padding: 0.25em 1em;
         cursor: pointer;

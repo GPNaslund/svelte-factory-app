@@ -120,7 +120,7 @@
 		background-color: rgba(25, 25, 25, 1);
 	}
 	button {
-		background: url('/GF-backward.png') no-repeat center center / contain;
+		background: url('/3R-backward.png') no-repeat center center / contain;
 		border: none;
 		cursor: pointer;
 		width: 9%;
