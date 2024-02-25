@@ -106,7 +106,7 @@
 		background-color: rgba(0, 0, 0, 0.5);
     }
 	button {
-		background: url('/blue-backwards.png') no-repeat center center / contain;
+		background: url('/GF-backward.png') no-repeat center center / contain;
 		border: none;
 		cursor: pointer;
 		width: 9%;

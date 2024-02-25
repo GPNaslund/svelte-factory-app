@@ -47,7 +47,7 @@
 </script>
 
 <div id="loading-container">
-	<img src="/GFLOMIntro.png" id="loading-image" alt="Lights out factory cover" />
+	<img src="/GF-LoM-Intro.png" id="loading-image" alt="Lights out factory cover" />
 	{#if !isBackground}
 	<div id="initialization-info">
 		{#if errorMessage}

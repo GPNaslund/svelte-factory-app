@@ -113,7 +113,7 @@
 	}
 
 	button {
-		background: url('/blue-plus-small.png') no-repeat center center / contain;
+		background: url('/GF-Plus-square.png') no-repeat center center / contain;
 		border: none; 
 		cursor: pointer;
 		width: 2vw;

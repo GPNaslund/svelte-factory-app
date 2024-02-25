@@ -68,14 +68,14 @@
 				videoName="ControlCenter"
 				tooltip="Control center"
 				tooltipPos="right"
-				top="49"
+				top="50"
 				left="6"
 			/>
 			<VideoLinkButton
 				videoName="LoadingStation"
 				tooltip="Loading station"
-				tooltipPos="left"
-				top="73"
+				tooltipPos="top"
+				top="72"
 				left="12"
 			/>
 
@@ -83,31 +83,31 @@
 				videoName="ElectrodeMillingCell"
 				tooltip="Electrode milling cell"
 				tooltipPos="left"
-				top="44"
-				left="19"
+				top="44.5"
+				left="18"
 			/>
 
 			<VideoLinkButton 
 				videoName="EDMCell" 
 				tooltip="EDM cell" 
 				tooltipPos="left" 
-				top="45" 
-				left="42.5" 
+				top="45.5" 
+				left="41.5" 
 			/>
 
 			<VideoLinkButton
 				videoName="MillingCell"
 				tooltip="Milling cell"
 				tooltipPos="left"
-				top="46.5"
-				left="67"
+				top="47"
+				left="66.5"
 			/>
 
 			<VideoLinkButton
 				videoName="WashingCell"
 				tooltip="Washing cell"
 				tooltipPos="bottom"
-				top="75"
+				top="76"
 				left="92"
 			/>
 
@@ -115,8 +115,8 @@
 				videoName="MeasuringCell"
 				tooltip="Measuring cell"
 				tooltipPos="left"
-				top="91"
-				left="83"
+				top="91.5"
+				left="82"
 			/>
 
 			<VideoLinkButton
@@ -124,14 +124,14 @@
 				tooltip="Material storage"
 				tooltipPos="left"
 				top="94"
-				left="49.5"
+				left="49"
 			/>
 
 			<VideoLinkButton
 				videoName="PreparationStation"
 				tooltip="Preparation station"
 				tooltipPos="left"
-				top="91"
+				top="92"
 				left="22"
 			/>
 
@@ -159,7 +159,7 @@
 
 	#button-container {
 		position: relative;
-		z-index: 3;
+		z-index: 5;
 	}
 
 	#video-background {
@@ -169,7 +169,7 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		z-index: 2;
+		z-index: 1;
 	}
 	
 	video {

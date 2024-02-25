@@ -22,7 +22,7 @@ const createVideoStore = () => {
 
     async function initializeDB() {
         return /** @type {Promise<void>} */(new Promise((resolve, reject) => {
-            const openRequest = indexedDB.open("LOFFactory", 2);
+            const openRequest = indexedDB.open("LOFFactory", 3);
             let db;
 
             openRequest.onupgradeneeded = (event) => {
